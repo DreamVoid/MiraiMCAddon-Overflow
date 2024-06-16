@@ -1,0 +1,14 @@
+name: MiraiMCAddon-Overflow
+version: '1.0'
+main: me.dreamvoid.miraimcaddon.overflow.BukkitPlugin
+api-version: '1.13'
+author: DreamVoid
+depend:
+  - MiraiMC
+commands:
+  overflow:
+    description: Overflow 主命令
+    permission: miraimc.command.overflow
+permissions:
+  miraimc.command.overflow:
+    default: op
