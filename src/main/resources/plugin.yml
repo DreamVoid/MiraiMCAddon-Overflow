@@ -12,3 +12,4 @@ commands:
 permissions:
   miraimc.command.overflow:
     default: op
+folia-supported: true

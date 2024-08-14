@@ -1,8 +1,14 @@
 package me.dreamvoid.miraimcaddon.overflow;
 
+import kotlin.jvm.functions.Function1;
 import me.dreamvoid.miraimc.LifeCycle;
+import me.dreamvoid.miraimc.api.MiraiMC;
+import me.dreamvoid.miraimc.internal.config.PluginConfig;
 import me.dreamvoid.miraimc.internal.loader.LibraryLoader;
 import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.utils.BotConfiguration;
+import net.mamoe.mirai.utils.LoggerAdapters;
+import net.mamoe.mirai.utils.MiraiLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,6 +16,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import top.mrxiaom.overflow.BotBuilder;
+
+import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public final class BukkitPlugin extends JavaPlugin {
@@ -20,7 +28,7 @@ public final class BukkitPlugin extends JavaPlugin {
         getLogger().info("Calling MiraiMC to load Overflow core.");
         LibraryLoader loader = LifeCycle.getPlatform().getLibraryLoader();
         try {
-            loader.loadLibraryMaven("top.mrxiaom", "overflow-core-all", "2.16.0-db61867-SNAPSHOT", "https://s01.oss.sonatype.org/content/repositories/snapshots", "-all.jar", getDataFolder().toPath());
+            loader.loadLibraryMaven("top.mrxiaom", "overflow-core-all", System.getProperty("MiraiMC.overflow-version", "2.16.0-e2ed65e-SNAPSHOT"), "https://s01.oss.sonatype.org/content/repositories/snapshots", "-all.jar", getDataFolder().toPath());
             System.setProperty("MiraiMC.do-not-load-mirai-core", "Overflow");
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -57,37 +65,62 @@ public final class BukkitPlugin extends JavaPlugin {
                 sender.sendMessage(ChatColor.RED + "Usage: /" + label + " <reload|connect>");
             }
         } else {
-            sender.sendMessage("This server is running "+ getDescription().getName() +" version "+  getDescription().getVersion() +" by "+ getDescription().getAuthors().toString().replace("[","").replace("]",""));
+            sender.sendMessage("This server is running " + getDescription().getName() + " version " + getDescription().getVersion() + " by " + getDescription().getAuthors().toString().replace("[", "").replace("]", ""));
         }
         return true;
     }
 
     private void connect(){
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                switch (getConfig().getString("type", "none")){
-                    case "positive":{
-                        bot = BotBuilder.positive(getConfig().getString("host"))
-                                .token(getConfig().getString("token"))
-                                .retryTimes(0)
-                                .overrideLogger(getSLF4JLogger())
-                                .connect();
-                        break;
-                    }
-                    case "reversed":{
-                        bot = BotBuilder.reversed(getConfig().getInt("port"))
-                                .token(getConfig().getString("token"))
-                                .retryTimes(0)
-                                .overrideLogger(getSLF4JLogger())
-                                .connect();
-                        break;
-                    }
-                    case "none":{
-                        getLogger().severe("Please check config file.");
-                    }
+        MiraiMC.getPlatform().runTaskAsync(() -> {
+            switch (getConfig().getString("type", "none")){
+                case "positive":{
+                    bot = BotBuilder.positive(getConfig().getString("host", "ws://127.0.0.1:5800"))
+                            .modifyBotConfiguration(configuration -> {
+                                if(PluginConfig.Bot.DisableBotLogs){
+                                    configuration.noBotLog();
+                                } else if(PluginConfig.Bot.UseMinecraftLogger.BotLogs){
+                                    configuration.setBotLoggerSupplier(bot -> LoggerAdapters.asMiraiLogger(getLogger()));
+                                }
+
+                                if(PluginConfig.Bot.DisableNetworkLogs){
+                                    configuration.noNetworkLog();
+                                } else if(PluginConfig.Bot.UseMinecraftLogger.NetworkLogs){
+                                    configuration.setNetworkLoggerSupplier(bot -> LoggerAdapters.asMiraiLogger(getLogger()));
+                                }
+                            })
+                            .token(getConfig().getString("token", ""))
+                            .retryTimes(getConfig().getInt("retry-time", 0))
+                            .overrideLogger(getSLF4JLogger())
+                            .connect();
+                    break;
+                }
+                case "reversed":{
+                    bot = BotBuilder.reversed(getConfig().getInt("port", 5700))
+                            .modifyBotConfiguration(configuration -> {
+                                if(PluginConfig.Bot.DisableBotLogs){
+                                    configuration.noBotLog();
+                                } else if(PluginConfig.Bot.UseMinecraftLogger.BotLogs){
+                                    configuration.setBotLoggerSupplier(bot -> LoggerAdapters.asMiraiLogger(getLogger()));
+                                }
+
+                                if(PluginConfig.Bot.DisableNetworkLogs){
+                                    configuration.noNetworkLog();
+                                } else if(PluginConfig.Bot.UseMinecraftLogger.NetworkLogs){
+                                    configuration.setNetworkLoggerSupplier(bot -> LoggerAdapters.asMiraiLogger(getLogger()));
+                                }
+                            })
+                            .token(getConfig().getString("token", ""))
+                            .retryTimes(getConfig().getInt("retry-time", 0))
+                            .overrideLogger(getSLF4JLogger())
+                            .connect();
+                    break;
+                }
+                case "none":
+                default:{
+                    getLogger().severe("Please check config file.");
+                    break;
                 }
             }
-        }.runTaskAsynchronously(this);
+        });
     }
 }
