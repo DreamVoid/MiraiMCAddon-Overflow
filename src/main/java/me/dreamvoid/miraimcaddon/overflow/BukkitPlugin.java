@@ -1,23 +1,16 @@
 package me.dreamvoid.miraimcaddon.overflow;
 
-import kotlin.jvm.functions.Function1;
-import me.dreamvoid.miraimc.LifeCycle;
 import me.dreamvoid.miraimc.api.MiraiMC;
 import me.dreamvoid.miraimc.internal.config.PluginConfig;
 import me.dreamvoid.miraimc.internal.loader.LibraryLoader;
 import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.utils.BotConfiguration;
 import net.mamoe.mirai.utils.LoggerAdapters;
-import net.mamoe.mirai.utils.MiraiLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import top.mrxiaom.overflow.BotBuilder;
-
-import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public final class BukkitPlugin extends JavaPlugin {
@@ -26,7 +19,7 @@ public final class BukkitPlugin extends JavaPlugin {
     public BukkitPlugin(){
         // 抢先在MiraiMC预加载之前加载Overflow，所以必须在插件实例化后就进行
         getLogger().info("Calling MiraiMC to load Overflow core.");
-        LibraryLoader loader = LifeCycle.getPlatform().getLibraryLoader();
+        LibraryLoader loader = MiraiMC.getPlatform().getLibraryLoader();
         try {
             loader.loadLibraryMaven("top.mrxiaom", "overflow-core-all", System.getProperty("MiraiMC.overflow-version", "2.16.0-e2ed65e-SNAPSHOT"), "https://s01.oss.sonatype.org/content/repositories/snapshots", "-all.jar", getDataFolder().toPath());
             System.setProperty("MiraiMC.do-not-load-mirai-core", "Overflow");
