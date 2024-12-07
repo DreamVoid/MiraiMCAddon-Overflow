@@ -1,7 +1,6 @@
 package me.dreamvoid.miraimcaddon.overflow;
 
 import me.dreamvoid.miraimc.api.MiraiMC;
-import me.dreamvoid.miraimc.internal.config.PluginConfig;
 import me.dreamvoid.miraimc.internal.loader.LibraryLoader;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.utils.LoggerAdapters;
@@ -69,15 +68,15 @@ public final class BukkitPlugin extends JavaPlugin {
                 case "positive":{
                     bot = BotBuilder.positive(getConfig().getString("host", "ws://127.0.0.1:5800"))
                             .modifyBotConfiguration(configuration -> {
-                                if(PluginConfig.Bot.DisableBotLogs){
+                                if(MiraiMC.getConfig().Bot_DisableBotLogs){
                                     configuration.noBotLog();
-                                } else if(PluginConfig.Bot.UseMinecraftLogger.BotLogs){
+                                } else if(MiraiMC.getConfig().Bot_UseMinecraftLogger_BotLogs){
                                     configuration.setBotLoggerSupplier(bot -> LoggerAdapters.asMiraiLogger(getLogger()));
                                 }
 
-                                if(PluginConfig.Bot.DisableNetworkLogs){
+                                if(MiraiMC.getConfig().Bot_DisableNetworkLogs){
                                     configuration.noNetworkLog();
-                                } else if(PluginConfig.Bot.UseMinecraftLogger.NetworkLogs){
+                                } else if(MiraiMC.getConfig().Bot_UseMinecraftLogger_NetworkLogs){
                                     configuration.setNetworkLoggerSupplier(bot -> LoggerAdapters.asMiraiLogger(getLogger()));
                                 }
                             })
@@ -90,15 +89,15 @@ public final class BukkitPlugin extends JavaPlugin {
                 case "reversed":{
                     bot = BotBuilder.reversed(getConfig().getInt("port", 5700))
                             .modifyBotConfiguration(configuration -> {
-                                if(PluginConfig.Bot.DisableBotLogs){
+                                if(MiraiMC.getConfig().Bot_DisableBotLogs){
                                     configuration.noBotLog();
-                                } else if(PluginConfig.Bot.UseMinecraftLogger.BotLogs){
+                                } else if(MiraiMC.getConfig().Bot_UseMinecraftLogger_BotLogs){
                                     configuration.setBotLoggerSupplier(bot -> LoggerAdapters.asMiraiLogger(getLogger()));
                                 }
 
-                                if(PluginConfig.Bot.DisableNetworkLogs){
+                                if(MiraiMC.getConfig().Bot_DisableNetworkLogs){
                                     configuration.noNetworkLog();
-                                } else if(PluginConfig.Bot.UseMinecraftLogger.NetworkLogs){
+                                } else if(MiraiMC.getConfig().Bot_UseMinecraftLogger_NetworkLogs){
                                     configuration.setNetworkLoggerSupplier(bot -> LoggerAdapters.asMiraiLogger(getLogger()));
                                 }
                             })
