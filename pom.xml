@@ -6,7 +6,7 @@
 
     <groupId>io.github.dreamvoid</groupId>
     <artifactId>MiraiMCAddon-Overflow</artifactId>
-    <version>1.1</version>
+    <version>1.1.1</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.20.6-R0.1-SNAPSHOT</version>
+            <version>1.19.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -45,9 +45,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>top.mrxiaom</groupId>
-            <artifactId>overflow-core</artifactId>
-            <version>2.16.0-e2ed65e-SNAPSHOT</version>
+            <groupId>top.mrxiaom.mirai</groupId>
+            <artifactId>overflow-core-all</artifactId>
+            <version>1.0.0.533-7d6c17e-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

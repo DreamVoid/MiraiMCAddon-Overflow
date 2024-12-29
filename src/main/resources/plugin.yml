@@ -1,7 +1,7 @@
 name: MiraiMCAddon-Overflow
-version: '1.1'
-main: me.dreamvoid.miraimcaddon.overflow.BukkitPlugin
-api-version: '1.13'
+version: '1.1.1'
+main: me.dreamvoid.miraimcaddon.overflow.bukkit.BukkitPlugin
+api-version: '1.19'
 author: DreamVoid
 depend:
   - MiraiMC

@@ -1,4 +1,4 @@
-package me.dreamvoid.miraimcaddon.overflow;
+package me.dreamvoid.miraimcaddon.overflow.velocity;
 
 import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandManager;
@@ -12,8 +12,8 @@ import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
-import me.dreamvoid.miraimc.api.MiraiMC;
-import me.dreamvoid.miraimc.internal.loader.LibraryLoader;
+import me.dreamvoid.miraimcaddon.overflow.Overflow;
+import me.dreamvoid.miraimcaddon.overflow.Platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.slf4j.Logger;
@@ -25,22 +25,22 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.Map;
 
 @Plugin(
         id = "miraimcaddon-overflow",
         name = "MiraiMCAddon-Overflow",
-        version = "1.0",
+        version = "1.1.1",
         authors = {"DreamVoid"},
         dependencies = {@Dependency(id = "miraimc")}
 )
-public class VelocityPlugin {
+public class VelocityPlugin implements Platform {
     private final ProxyServer proxy;
     private final Logger logger;
     private final Path dataDirectory;
 
-    private HashMap<String, Object> config;
-    private final VelocityBridge bridge = new VelocityBridge(this);
+    private final Overflow lifeCycle = new Overflow(this);
+    private Map<String, Object> config;
 
     @Inject
     public VelocityPlugin(ProxyServer proxy, Logger logger, @DataDirectory Path dataDirectory) {
@@ -48,14 +48,7 @@ public class VelocityPlugin {
         this.logger = logger;
         this.dataDirectory = dataDirectory;
 
-        logger.info("Calling MiraiMC to load Overflow core.");
-        LibraryLoader loader = MiraiMC.getPlatform().getLibraryLoader();
-        try {
-            loader.loadLibraryMaven("top.mrxiaom.mirai", "overflow-core-all", System.getProperty("MiraiMC.overflow-version", "1.0.0.533-7d6c17e-SNAPSHOT"), "https://s01.oss.sonatype.org/content/repositories/snapshots", "-all.jar", dataDirectory);
-            System.setProperty("MiraiMC.do-not-load-mirai-core", "Overflow");
-        } catch (Exception e) {
-            logger.error("加载 Overflow 核心时出现异常！", e);
-        }
+        lifeCycle.loadOverflow();
     }
 
     @Subscribe
@@ -77,7 +70,7 @@ public class VelocityPlugin {
                         sender.sendMessage(Component.text("已重新加载Overflow配置。").color(NamedTextColor.GREEN));
                     } else if (args[0].equalsIgnoreCase("connect")){
                         sender.sendMessage(Component.text("尝试连接到Onebot，请查看控制台以了解更多信息。").color(NamedTextColor.GREEN));
-                        connect();
+                        lifeCycle.connect();
                     } else {
                         sender.sendMessage(Component.text("Usage: /overflow <reload|connect>").color(NamedTextColor.RED));
                     }
@@ -92,15 +85,31 @@ public class VelocityPlugin {
             }
         });
 
-        connect();
+        lifeCycle.connect();
     }
 
     @Subscribe
     public void onProxyShutdown(ProxyShutdownEvent event){
-        bridge.shutdown();
+        lifeCycle.disconnect();
     }
 
-    private void reloadConfig(){
+    @Override
+    public Logger getPluginLogger() {
+        return logger;
+    }
+
+    @Override
+    public Map<String, Object> getConfigMap() {
+        return config;
+    }
+
+    @Override
+    public Path getDataPath() {
+        return dataDirectory;
+    }
+
+    @Override
+    public void reloadConfig(){
         if(!dataDirectory.toFile().exists() && !dataDirectory.toFile().mkdirs()) {
             logger.warn("Failed to create plugin data directory!");
         }
@@ -117,21 +126,9 @@ public class VelocityPlugin {
 
         Yaml yaml = new Yaml();
         try {
-            config = yaml.loadAs(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8), HashMap.class);
+            config = yaml.loadAs(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8), Map.class);
         } catch (IOException e) {
             logger.error("Failed to load config file!", e);
         }
-    }
-
-    private void connect(){
-        bridge.connect();
-    }
-
-    public Logger getLogger() {
-        return logger;
-    }
-
-    public HashMap<String, Object> getConfig() {
-        return config;
     }
 }
