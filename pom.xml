@@ -41,19 +41,25 @@
         <dependency>
             <groupId>io.github.dreamvoid</groupId>
             <artifactId>MiraiMC-Integration</artifactId>
-            <version>1.9-pre3</version>
+            <version>1.9-rc1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>top.mrxiaom.mirai</groupId>
             <artifactId>overflow-core-all</artifactId>
-            <version>1.0.0.533-7d6c17e-SNAPSHOT</version>
-            <scope>provided</scope>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>net.mamoe</groupId>
             <artifactId>mirai-core-jvm</artifactId>
             <version>2.16.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+            <version>1.10.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

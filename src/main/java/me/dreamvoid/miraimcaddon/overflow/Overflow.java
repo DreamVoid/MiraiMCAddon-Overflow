@@ -16,10 +16,11 @@ public class Overflow {
 
     public void loadOverflow() {
         try {
-            MiraiMC.getPlatform().getLibraryLoader().loadLibraryMaven(System.getProperty("MiraiMC.Overflow.dependency.groupId", "top.mrxiaom.mirai"),
+            MiraiMC.getPlatform().getLibraryLoader().loadLibraryMaven(
+                    System.getProperty("MiraiMC.Overflow.dependency.groupId", "top.mrxiaom.mirai"),
                     System.getProperty("MiraiMC.Overflow.dependency.artifactId", "overflow-core-all"),
-                    System.getProperty("MiraiMC.Overflow.dependency.version", "2.16.0-e2ed65e-SNAPSHOT"),
-                    System.getProperty("MiraiMC.Overflow.repo.url", "https://s01.oss.sonatype.org/content/repositories/snapshots"),
+                    System.getProperty("MiraiMC.Overflow.dependency.version", "1.0.1"),
+                    System.getProperty("MiraiMC.Overflow.repo.url", "https://repo.huaweicloud.com/repository/maven/"),
                     "-all.jar",
                     plugin.getDataPath());
             System.setProperty("MiraiMC.do-not-load-mirai-core", "Overflow");
