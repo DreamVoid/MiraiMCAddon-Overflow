@@ -22,7 +22,6 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
@@ -126,7 +125,7 @@ public class VelocityPlugin implements Platform {
 
         Yaml yaml = new Yaml();
         try {
-            config = yaml.loadAs(new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8), Map.class);
+            config = yaml.loadAs(Files.readString(file.toPath()), Map.class);
         } catch (IOException e) {
             logger.error("Failed to load config file!", e);
         }

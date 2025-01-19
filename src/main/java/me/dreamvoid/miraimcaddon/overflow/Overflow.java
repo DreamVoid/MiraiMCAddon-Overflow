@@ -31,30 +31,20 @@ public class Overflow {
 
     public void connect(){
         MiraiMC.getPlatform().runTaskAsync(() -> {
-            switch (plugin.getConfigMap().getOrDefault("type", "none").toString()){
-                case "positive":{
-                    bot = BotBuilder.positive(plugin.getConfigMap().getOrDefault("host", "ws://127.0.0.1:5800").toString())
-                            .modifyBotConfiguration(this::accept)
-                            .token(plugin.getConfigMap().getOrDefault("token", "").toString())
-                            .retryTimes(Integer.parseInt(plugin.getConfigMap().getOrDefault("retry-time", 0).toString()))
-                            .overrideLogger(plugin.getPluginLogger())
-                            .connect();
-                    break;
-                }
-                case "reversed":{
-                    bot = BotBuilder.reversed(Integer.parseInt(plugin.getConfigMap().getOrDefault("port", 5700).toString()))
-                            .modifyBotConfiguration(this::accept)
-                            .token(plugin.getConfigMap().getOrDefault("token", "").toString())
-                            .retryTimes(Integer.parseInt(plugin.getConfigMap().getOrDefault("retry-time", 0).toString()))
-                            .overrideLogger(plugin.getPluginLogger())
-                            .connect();
-                    break;
-                }
-                case "none":
-                default:{
-                    plugin.getPluginLogger().error("Please check config file.");
-                    break;
-                }
+            switch (plugin.getConfigMap().getOrDefault("type", "none").toString()) {
+                case "positive" -> bot = BotBuilder.positive(plugin.getConfigMap().getOrDefault("host", "ws://127.0.0.1:5800").toString())
+                        .modifyBotConfiguration(this::accept)
+                        .token(plugin.getConfigMap().getOrDefault("token", "").toString())
+                        .retryTimes(Integer.parseInt(plugin.getConfigMap().getOrDefault("retry-time", 0).toString()))
+                        .overrideLogger(plugin.getPluginLogger())
+                        .connect();
+                case "reversed" -> bot = BotBuilder.reversed(Integer.parseInt(plugin.getConfigMap().getOrDefault("port", 5700).toString()))
+                        .modifyBotConfiguration(this::accept)
+                        .token(plugin.getConfigMap().getOrDefault("token", "").toString())
+                        .retryTimes(Integer.parseInt(plugin.getConfigMap().getOrDefault("retry-time", 0).toString()))
+                        .overrideLogger(plugin.getPluginLogger())
+                        .connect();
+                default -> plugin.getPluginLogger().error("Please check config file.");
             }
         });
     }

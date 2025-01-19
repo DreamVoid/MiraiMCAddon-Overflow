@@ -22,15 +22,15 @@ MiraiMCAddon-Overflow 是一个 Overflow 的 Minecraft 服务端实现，能够�
 
 ## 指令和权限
 ### 指令
-| 命令 | 描述 | 权限 |
-| ---- | --- | ---- |
-| /overflow  | MiraiMCAddon-Overflow 主命令 | miraimc.command.overflow |
-| /overflow connect | 连接到机器人 | miraimc.command.overflow |
-| /overflow reload | 重新加载配置文件 | miraimc.command.overflow |
+| 命令                | 描述                        | 权限                       |
+|-------------------|---------------------------|--------------------------|
+| /overflow         | MiraiMCAddon-Overflow 主命令 | miraimc.command.overflow |
+| /overflow connect | 连接到机器人                    | miraimc.command.overflow |
+| /overflow reload  | 重新加载配置文件                  | miraimc.command.overflow |
 
 ### 权限
-| 权限节点 | 描述 | 默认 |
-| ------- | ---- | ---- |
+| 权限节点                     | 描述             | 默认 |
+|--------------------------|----------------|----|
 | miraimc.command.overflow | 允许使用 /overflow | OP |
 
 ## 许可证
