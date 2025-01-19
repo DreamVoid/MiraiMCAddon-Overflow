@@ -1,4 +1,10 @@
-# MiraiMCAddon-Overflow
+<div align="center">
+    <h1> MiraiMCAddon-Overflow </h1>
+</div>
+
+[简体中文](README.md) | [English](README.en-US.md)
+
+---
 
 [Overflow](https://github.com/MrXiaoM/Overflow) is an alternative core for mirai. MiraiMCAddon-Overflow provides Overflow support for [MiraiMC](https://github.com/DreamVoid/MiraiMC).
 
@@ -8,7 +14,8 @@ MiraiMCAddon-Overflow is a Minecraft server implementation of Overflow that allo
 
 ## Downloads
 * Stable Versions
-  * [GitHub Releases Page](https://github.com/DreamVoid/MiraiMCAddon-Overflow/releases)
+  * [Modrinth](https://modrinth.com/project/miraimcaddon-overflow/versions)
+  * [GitHub Releases](https://github.com/DreamVoid/MiraiMCAddon-Overflow/releases)
 
 ## Getting Started (Server)
 

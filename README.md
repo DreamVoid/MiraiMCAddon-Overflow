@@ -1,4 +1,10 @@
-# MiraiMCAddon-Overflow
+<div align="center">
+    <h1> MiraiMCAddon-Overflow </h1>
+</div>
+
+[简体中文](README.md) | [English](README.en-US.md)
+
+---
 
 [Overflow](https://github.com/MrXiaoM/Overflow) 是 mirai 的替代核心，MiraiMCAddon-Overflow 为 [MiraiMC](https://github.com/DreamVoid/MiraiMC) 提供 Overflow 支持。
 
@@ -8,6 +14,7 @@ MiraiMCAddon-Overflow 是一个 Overflow 的 Minecraft 服务端实现，能够�
 
 ## 下载
 * 稳定版本
+  * [Modrinth](https://modrinth.com/project/miraimcaddon-overflow/versions)
   * [GitHub 发布页](https://github.com/DreamVoid/MiraiMCAddon-Overflow/releases)
 
 ## 开始使用（服务器）
