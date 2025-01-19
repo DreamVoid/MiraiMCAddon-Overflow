@@ -1,5 +1,6 @@
 name: MiraiMCAddon-Overflow
-version: '1.1.1'
+version: '${project.version}'
+description: Overflow support for MiraiMC
 main: me.dreamvoid.miraimcaddon.overflow.bukkit.BukkitPlugin
 api-version: '1.19'
 author: DreamVoid

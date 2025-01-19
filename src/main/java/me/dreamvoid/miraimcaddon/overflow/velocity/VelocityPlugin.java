@@ -29,7 +29,8 @@ import java.util.Map;
 @Plugin(
         id = "miraimcaddon-overflow",
         name = "MiraiMCAddon-Overflow",
-        version = "1.1.1",
+        version = "PROJECT.VERSION",
+        description = "Overflow support for MiraiMC",
         authors = {"DreamVoid"},
         dependencies = {@Dependency(id = "miraimc")}
 )
