@@ -44,10 +44,13 @@ public final class BukkitPlugin extends JavaPlugin implements Platform {
                 reloadConfig();
                 Command.broadcastCommandMessage(sender, Component.text("已重新加载Overflow配置。", NamedTextColor.GREEN));
             } else if (args[0].equalsIgnoreCase("connect")){
-                Command.broadcastCommandMessage(sender, Component.text("尝试连接到Onebot，请查看控制台以了解更多信息。", NamedTextColor.GREEN));
+                Command.broadcastCommandMessage(sender, Component.text("尝试连接到OneBot，请查看控制台以了解更多信息。", NamedTextColor.GREEN));
                 lifeCycle.connect();
+            } else if (args[0].equalsIgnoreCase("disconnect")) {
+                Command.broadcastCommandMessage(sender, Component.text("正在断开OneBot的连接，请查看控制台以了解更多信息。", NamedTextColor.GREEN));
+                lifeCycle.disconnect();
             } else {
-                sender.sendMessage(Component.text("Usage: /" + label + " <reload|connect>", NamedTextColor.RED));
+                sender.sendMessage(Component.text("Usage: /" + label + " <reload|connect|disconnect>", NamedTextColor.RED));
             }
         } else {
             //noinspection UnstableApiUsage

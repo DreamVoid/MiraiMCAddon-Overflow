@@ -31,20 +31,27 @@ public class Overflow {
 
     public void connect(){
         MiraiMC.getPlatform().runTaskAsync(() -> {
-            switch (plugin.getConfigMap().getOrDefault("type", "none").toString()) {
-                case "positive" -> bot = BotBuilder.positive(plugin.getConfigMap().getOrDefault("host", "ws://127.0.0.1:5800").toString())
-                        .modifyBotConfiguration(this::accept)
-                        .token(plugin.getConfigMap().getOrDefault("token", "").toString())
-                        .retryTimes(Integer.parseInt(plugin.getConfigMap().getOrDefault("retry-time", 0).toString()))
-                        .overrideLogger(plugin.getPluginLogger())
-                        .connect();
-                case "reversed" -> bot = BotBuilder.reversed(Integer.parseInt(plugin.getConfigMap().getOrDefault("port", 5700).toString()))
-                        .modifyBotConfiguration(this::accept)
-                        .token(plugin.getConfigMap().getOrDefault("token", "").toString())
-                        .retryTimes(Integer.parseInt(plugin.getConfigMap().getOrDefault("retry-time", 0).toString()))
-                        .overrideLogger(plugin.getPluginLogger())
-                        .connect();
-                default -> plugin.getPluginLogger().error("Please check config file.");
+            synchronized (plugin) {
+                if(bot != null) {
+                    plugin.getPluginLogger().info("另一个机器人进程已经存在，正在关闭其他机器人...");
+                    disconnect();
+                }
+
+                switch (plugin.getConfigMap().getOrDefault("type", "none").toString()) {
+                    case "positive" -> bot = BotBuilder.positive(plugin.getConfigMap().getOrDefault("host", "ws://127.0.0.1:5800").toString())
+                            .modifyBotConfiguration(this::accept)
+                            .token(plugin.getConfigMap().getOrDefault("token", "").toString())
+                            .retryTimes(Integer.parseInt(plugin.getConfigMap().getOrDefault("retry-time", 0).toString()))
+                            .overrideLogger(plugin.getPluginLogger())
+                            .connect();
+                    case "reversed" -> bot = BotBuilder.reversed(Integer.parseInt(plugin.getConfigMap().getOrDefault("port", 5700).toString()))
+                            .modifyBotConfiguration(this::accept)
+                            .token(plugin.getConfigMap().getOrDefault("token", "").toString())
+                            .retryTimes(Integer.parseInt(plugin.getConfigMap().getOrDefault("retry-time", 0).toString()))
+                            .overrideLogger(plugin.getPluginLogger())
+                            .connect();
+                    default -> plugin.getPluginLogger().error("Please check config file.");
+                }
             }
         });
     }
@@ -53,6 +60,7 @@ public class Overflow {
         if(bot != null){
             plugin.getPluginLogger().info("Disconnecting Overflow bot.");
             bot.close();
+            bot = null;
         }
     }
 
