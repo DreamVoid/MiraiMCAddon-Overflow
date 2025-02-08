@@ -22,7 +22,7 @@ public class Overflow {
                     System.getProperty("MiraiMC.Overflow.dependency.version", "1.0.1"),
                     System.getProperty("MiraiMC.Overflow.repo.url", "https://repo.huaweicloud.com/repository/maven/"),
                     "-all.jar",
-                    plugin.getDataPath());
+                    plugin.getDataPath().resolve("libs"));
             System.setProperty("MiraiMC.do-not-load-mirai-core", "Overflow");
         } catch (Exception e) {
             plugin.getPluginLogger().error("Failed to load Overflow!", e);
