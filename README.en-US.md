@@ -1,3 +1,4 @@
+<!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
     <h1> MiraiMCAddon-Overflow </h1>
 </div>
@@ -29,11 +30,11 @@ If everything works as expected, the plugin will automatically connect to your O
 
 ## Commands and Permissions
 ### Commands
-| Command             | Description                  | Permission                |
-|---------------------|------------------------------|---------------------------|
-| /overflow           | Main command for MiraiMCAddon-Overflow | miraimc.command.overflow |
-| /overflow connect   | Connect to the bot           | miraimc.command.overflow |
-| /overflow reload    | Reload configuration files   | miraimc.command.overflow |
+| Command           | Description                            | Permission               |
+|-------------------|:---------------------------------------|--------------------------|
+| /overflow         | Main command for MiraiMCAddon-Overflow | miraimc.command.overflow |
+| /overflow connect | Connect to the bot                     | miraimc.command.overflow |
+| /overflow reload  | Reload configuration files             | miraimc.command.overflow |
 
 ### Permissions
 | Permission Node              | Description             | Default |

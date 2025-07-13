@@ -12,17 +12,12 @@ import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
-import me.dreamvoid.miraimcaddon.overflow.Overflow;
+import me.dreamvoid.miraimcaddon.overflow.OverflowLifeCycle;
 import me.dreamvoid.miraimcaddon.overflow.Platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.slf4j.Logger;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 
@@ -39,7 +34,7 @@ public class VelocityPlugin implements Platform {
     private final Logger logger;
     private final Path dataDirectory;
 
-    private final Overflow lifeCycle = new Overflow(this);
+    private final OverflowLifeCycle lifeCycle = new OverflowLifeCycle(this);
     private Map<String, Object> config;
 
     @Inject
@@ -48,15 +43,15 @@ public class VelocityPlugin implements Platform {
         this.logger = logger;
         this.dataDirectory = dataDirectory;
 
-        lifeCycle.loadOverflow();
+        lifeCycle.loadOverflowLibrary();
     }
 
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        logger.info("Loading configuration.");
-        reloadConfig();
+        logger.info("正在加载配置文件");
+        lifeCycle.loadConfig();
 
-        logger.info("Registering commands.");
+        logger.info("正在注册命令");
         CommandManager manager = proxy.getCommandManager();
         CommandMeta overflow = manager.metaBuilder("overflow").build();
         manager.register(overflow, new SimpleCommand() {
@@ -66,16 +61,16 @@ public class VelocityPlugin implements Platform {
                 CommandSource sender = invocation.source();
                 if(args.length > 0){
                     if(args[0].equalsIgnoreCase("reload")){
-                        reloadConfig();
+                        lifeCycle.loadConfig();
                         sender.sendMessage(Component.text("已重新加载Overflow配置。").color(NamedTextColor.GREEN));
                     } else if (args[0].equalsIgnoreCase("connect")){
                         sender.sendMessage(Component.text("尝试连接到Onebot，请查看控制台以了解更多信息。").color(NamedTextColor.GREEN));
                         lifeCycle.connect();
                     } else {
-                        sender.sendMessage(Component.text("Usage: /overflow <reload|connect>").color(NamedTextColor.RED));
+                        sender.sendMessage(Component.text("用法: /overflow <reload|connect>").color(NamedTextColor.RED));
                     }
                 } else {
-                    proxy.getPluginManager().getPlugin("miraimcaddon-overflow").ifPresent(plugin -> sender.sendMessage(Component.text("This server is running " + plugin.getDescription().getName() + " version " + plugin.getDescription().getVersion() + " by " + plugin.getDescription().getAuthors().toString().replace("[", "").replace("]", ""))));
+                    proxy.getPluginManager().getPlugin("miraimcaddon-overflow").ifPresent(plugin -> sender.sendMessage(Component.text("This server is running " + plugin.getDescription().getName() + " version " + plugin.getDescription().getVersion() + " by " + String.join(", ", plugin.getDescription().getAuthors()))));
                 }
             }
 
@@ -99,36 +94,7 @@ public class VelocityPlugin implements Platform {
     }
 
     @Override
-    public Map<String, Object> getConfigMap() {
-        return config;
-    }
-
-    @Override
     public Path getDataPath() {
         return dataDirectory;
-    }
-
-    @Override
-    public void reloadConfig(){
-        if(!dataDirectory.toFile().exists() && !dataDirectory.toFile().mkdirs()) {
-            logger.warn("Failed to create plugin data directory!");
-        }
-
-        File file = dataDirectory.resolve("config.yml").toFile();
-        if (!file.exists()) {
-            try (InputStream is = this.getClass().getResourceAsStream("/config.yml")) {
-                assert is != null;
-                Files.copy(is, file.toPath());
-            } catch (IOException e) {
-                logger.error("Failed to save default config file!", e);
-            }
-        }
-
-        Yaml yaml = new Yaml();
-        try {
-            config = yaml.loadAs(Files.readString(file.toPath()), Map.class);
-        } catch (IOException e) {
-            logger.error("Failed to load config file!", e);
-        }
     }
 }

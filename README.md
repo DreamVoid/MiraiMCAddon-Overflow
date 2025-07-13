@@ -1,3 +1,4 @@
+<!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
     <h1> MiraiMCAddon-Overflow </h1>
 </div>
