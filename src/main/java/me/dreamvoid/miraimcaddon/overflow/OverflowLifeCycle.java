@@ -63,7 +63,7 @@ public class OverflowLifeCycle {
                     disconnect();
                 }
 
-                BotBuilder builder = (overflowConfig.getReversedWsPort() != -1)
+                BotBuilder builder = (overflowConfig.getReversedWsPort() == -1)
                         ? BotBuilder.positive(overflowConfig.getWsHost())
                         : BotBuilder.reversed(overflowConfig.getReversedWsPort());
                 builder.token(overflowConfig.getToken());
